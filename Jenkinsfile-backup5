@@ -7,7 +7,6 @@ pipeline {
         SONARQUBE_ENV = 'Sonarqube'
         SONARQUBE_TOKEN = credentials('credential-sonarqube')
         SONAR_HOST_URL = 'http://192.168.27.66:9000/'
-        KUBECONFIG_PATH = '/var/lib/jenkins/.kube/config'
     }
 
     stages {
