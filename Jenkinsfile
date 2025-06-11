@@ -69,7 +69,7 @@ pipeline {
             steps {
                 withEnv(["KUBECONFIG=$KUBECONFIG_PATH"]) {
                     sh """
-                        helm upgrade --install taskshare-backend /home/taskshare-backend/taskshare-backend \
+                        helm upgrade --install taskmanager-backend-k3s /home/taskmanager-backend-k3s \
                             --set image.repository=$DOCKER_IMAGE \
                             --set image.tag=$BUILD_NUMBER \
                             -n test --create-namespace
