@@ -64,33 +64,14 @@ pipeline {
             }
         }
         
-        stage('Déploiement sur TEST') {
+        stage('Déploiement Backend') {
             steps {
-                withEnv(["KUBECONFIG=$KUBECONFIG_PATH"]) {
+                script {
                     sh """
-                        helm upgrade --install taskshare-backend /home/taskshare-backend/taskshare-backend \
+                        helm upgrade --install taskmanager-backend-k3s /home/taskmanager-backend-k3s \
                             --set image.repository=$DOCKER_IMAGE \
                             --set image.tag=$BUILD_NUMBER \
-                            -n test --create-namespace
-                    """
-                }
-            }
-        }
-
-        stage('Approval for Production') {
-            steps {
-                input message: "Déployer en production ?"
-            }
-        }
-
-        stage('Déploiement sur PRODUCTION') {
-            steps {
-                withEnv(["KUBECONFIG=$KUBECONFIG_PATH"]) {
-                    sh """
-                        helm upgrade --install taskshare-backend /home/taskshare-backend/taskshare-backend \
-                            --set image.repository=$DOCKER_IMAGE \
-                            --set image.tag=$BUILD_NUMBER \
-                            -n taskshare --create-namespace
+                            -n taskmanager --create-namespace
                     """
                 }
             }
@@ -99,7 +80,9 @@ pipeline {
 
     post {
         always {
-            junit 'backend/test-results/results.xml'
+            script {
+                junit 'backend/test-results/results.xml'
+            }
         }
     }
 }
